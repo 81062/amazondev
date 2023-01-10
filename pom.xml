@@ -1,46 +1,132 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.spring.rest.app</groupId>
-	<artifactId>SpringRestIntegrationApp</artifactId>
+
+	<groupId>com.example</groupId>
+	<artifactId>opscenter</artifactId>
+	<version>5.0.0</version>
 	<packaging>war</packaging>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>SpringRestIntegrationApp Maven Webapp</name>
-	<url>http://maven.apache.org</url>
+
+	<name>amazon</name>
+	<description>Cloud Binary Java WebApplication Project</description>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.5.6.RELEASE</version>
+		<relativePath /> <!-- lookup parent from repository -->
+	</parent>
 
 	<properties>
-		<springframework.version>4.3.0.RELEASE</springframework.version>
-		<jackson.library>2.7.5</jackson.library>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
+ 		<maven.compiler.target>1.8</maven.compiler.target>
+		<java.version>11</java.version>
+		<surefire.version>3.0.0-M7</surefire.version>
+		<jacoco.version>0.7.9</jacoco.version>
+		
+		<!-- SonarQube Integration -->
+		<sonar.organization>81062</sonar.organization>
+		<sonar.projectKey>binary</sonar.projectKey>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+		<sonar.login>654689bc1303e0dac73c6af31525c9b2fb4c10bd</sonar.login>
 	</properties>
+	
+	<!-- Jfrog Integration with POM.xml file -->
+<distributionManagement>
+    <repository>
+        <id>central</id>
+        <name>a0va9bga9ha9q-artifactory-primary-0-releases</name>
+        <url>https://foodie.jfrog.io/artifactory/libs-release</url>
+    </repository>
+</distributionManagement>	
+	<scm>
+		<connection>https://github.com/81062/amazondev.git</connection>
+		<developerConnection>https://github.com/81062/amazondev.git</developerConnection>
+		<url>https://github.com/81062/amazondev.git</url>
+		<tag>HEAD</tag>
+	</scm>
 
 	<dependencies>
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-			<version>${springframework.version}</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-			<version>${springframework.version}</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-			<version>${springframework.version}</version>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-logging</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>3.1.0</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>2.7.5</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+		</dependency>
+<!--		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+		</dependency> 
+-->
 	</dependencies>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>3.8.7</version>
+				<configuration>
+					<tagNameFormat>v@{project.version}</tagNameFormat>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+				</configuration>
+			</plugin>
+			<plugin>
+			  <groupId>org.apache.maven.plugins</groupId>
+			  <artifactId>maven-surefire-plugin</artifactId>
+			  <version>${surefire.version}</version><!--$NO-MVN-MAN-VER$-->
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+        	</plugin>
+			<plugin>
+			    <groupId>org.jacoco</groupId>
+			    <artifactId>jacoco-maven-plugin</artifactId>
+			    <version>${jacoco.version}</version>
+			    <executions>
+			        <execution>
+			            <id>default-prepare-agent</id>
+			            <goals><goal>prepare-agent</goal></goals>
+			        </execution>
+			        <execution>
+			            <id>default-report</id>
+			            <phase>prepare-package</phase>
+			            <goals><goal>report</goal></goals>
+			        </execution>
+			    </executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
